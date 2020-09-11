@@ -1,0 +1,9 @@
+Artefact: ancient timepiece
+Amount: 13
+Total cost of 13 ancient timepiece(s) is: 1583296 gp
+
+
+# NOTES: 
+# RS Wiki on Thurs Sept 10
+# Total restoration price of 1 ancient timepiece: 121,792 gp
+# 121,792 * 13 = 1,583,296
