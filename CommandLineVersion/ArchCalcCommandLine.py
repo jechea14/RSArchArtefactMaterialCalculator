@@ -1,5 +1,4 @@
 import requests
-import pandas as pd
 from bs4 import BeautifulSoup
 
 #Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36
@@ -78,4 +77,6 @@ def mult(amount):
     return s
 
 sum = mult(amt)
+
+# Print out summary
 print(f"Total cost of {amt} {artefact}(s) is: {sum} gp")
