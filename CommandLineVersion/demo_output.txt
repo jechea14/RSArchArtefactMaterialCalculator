@@ -1,9 +1,22 @@
-Artefact: ancient timepiece
-Amount: 13
-Total cost of 13 ancient timepiece(s) is: 1583296 gp
+Artifact: ancient timepiece
+Amount: 5
+
+Material Name: Goldrune
+Amount: 60
+Price: 1878 gp
+Total Price: 112680 gp
 
 
-# NOTES: 
-# RS Wiki on Thurs Sept 10
-# Total restoration price of 1 ancient timepiece: 121,792 gp
-# 121,792 * 13 = 1,583,296
+Material Name: Imperial steel
+Amount: 80
+Price: 1747 gp
+Total Price: 139760 gp
+
+
+Material Name: Ancient vis
+Amount: 90
+Price: 4179 gp
+Total Price: 376110 gp
+
+
+Total cost of 5 ancient timepiece(s) is: 628550 gp
