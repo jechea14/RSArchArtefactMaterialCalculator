@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import requests
 from bs4 import BeautifulSoup
@@ -27,6 +28,7 @@ async def get_input_of_type(func, ctx):
 
 @client.command()
 async def calc(ctx):
+    # Get inputs from user
     await ctx.send("Enter the Artifact")
     artifact = await get_input_of_type(str, ctx)
     await ctx.send("How many?")
@@ -39,69 +41,135 @@ async def calc(ctx):
     'From': 'youremail@domain.com'
     }
 
-    # Web scrape the RS Wiki to find the material data
-    url_start = "https://runescape.wiki/w/"
-    full_url = url_start + artifact
+    # Show the bot is typing
+    async with ctx.typing():
+        await asyncio.sleep(2)
 
-    url = requests.get(full_url, headers=custom_agent).text
+        url_start = "https://runescape.wiki/w/"
+        full_url = url_start + artifact
+        status_check = requests.get(full_url, headers=custom_agent)
 
-    soup = BeautifulSoup(url, 'lxml')
+        # Check if artifact input is valid
+        if status_check.status_code == 200:
+            url = requests.get(full_url, headers=custom_agent).text
+        else:
+            await ctx.send('Invalid artifact. Please try again.')
+            raise Exception('Invalid artifact. Please try again.')
 
-    My_table = soup.find_all('table', class_='wikitable')[1]
+        # Web scrape the RS Wiki to find the material data
+        soup = BeautifulSoup(url, 'lxml')
 
-    t = []
+        My_table = soup.find_all('table', class_='wikitable')[1]
 
-    for item in My_table.find_all('tbody'):
-        for a in item.find_all('tr')[9:]:
-            for b in a.find_all('td'):
-                temp = b.get_text()
-                t.append(temp)
+        t = []
 
-    b = [x for x in t if x]
+        for item in My_table.find_all('tbody'):
+            for a in item.find_all('tr')[9:]:
+                for b in a.find_all('td'):
+                    temp = b.get_text()
+                    t.append(temp)
 
-    # Split list into individual lists
-    mat_name = b[:-1:4]
-    mat_amount = b[1:-1:4]
-    mat_price = b[2:-1:4]
-    total_mat_price = b[3:-1:4]
-    total_price = [b[-1]]
+        b = [x for x in t if x]
 
-    # Remove commas in digit strings for future calculations
-    index = 0
-    while index < len(mat_price):
-        mat_amount[index] = mat_amount[index].replace(',', '')
-        mat_price[index] = mat_price[index].replace(',', '')
-        total_mat_price[index] = total_mat_price[index].replace(',', '')
-        index += 1
+        # Split list into individual lists
+        mat_name = b[:-1:4]
+        mat_amount = b[1:-1:4]
+        mat_price = b[2:-1:4]
+        total_mat_price = b[3:-1:4]
+        total_price = [b[-1]]
 
-    index2 = 0
-    while index2 < len(total_price):
-        total_price[index2] = total_price[index2].replace(',', '')
-        index2 += 1
+        # Remove commas in digit strings for future calculations
+        index = 0
+        while index < len(mat_price):
+            mat_amount[index] = mat_amount[index].replace(',', '')
+            mat_price[index] = mat_price[index].replace(',', '')
+            total_mat_price[index] = total_mat_price[index].replace(',', '')
+            index += 1
 
-    # Create class to store material data
-    class Materials:
-        def __init__(self, mat_name, mat_amount, mat_price, total_mat_price):
-            self.mat_name = mat_name
-            self.mat_amount = int(mat_amount)
-            self.mat_price = int(mat_price)
-            self.total_mat_price = int(total_mat_price)
+        index2 = 0
+        while index2 < len(total_price):
+            total_price[index2] = total_price[index2].replace(',', '')
+            index2 += 1
 
-    # Store each Material class object into a list
-    list2 = []
+        # Create class to store material data
+        class Materials:
+            def __init__(self, mat_name, mat_amount, mat_price, total_mat_price):
+                self._mat_name = mat_name
+                self._mat_amount = int(mat_amount)
+                self._mat_price = int(mat_price)
+                self._total_mat_price = int(total_mat_price)
+                
+            @property
+            def MatName(self):
+                return self._mat_name
+            
+            @property
+            def MatAmount(self):
+                return self._mat_amount
+            
+            @property
+            def MatPrice(self):
+                return self._mat_price
 
-    for i in range(len(mat_name)):
-        mat1 = list2.append(Materials(mat_name[i], mat_amount[i], mat_price[i], total_mat_price[i]))
+            @property
+            def TotalMatPrice(self):
+                return self._total_mat_price
+            
+            @MatAmount.setter
+            def MatAmount(self, mat_amount):
+                self._mat_amount = mat_amount
 
-    # Calculate the total price of all materials
-    def mult(amount):
-        s = 0
-        for item in list2:
-            s += item.total_mat_price
-        s *= amount
-        return s
+            @TotalMatPrice.setter
+            def TotalMatPrice(self, total_mat_price):
+                self._total_mat_price = total_mat_price
 
-    sum = mult(amt)
-    await ctx.send(f"Total cost of {amt} {artifact}(s) is: {sum} gp")
+        # Store each Material class object into a list
+        list2 = []
+
+        for i in range(len(mat_name)):
+            list2.append(Materials(mat_name[i], 
+                                mat_amount[i], 
+                                mat_price[i], 
+                                total_mat_price[i]))
+
+        # Calculate the total price of all materials
+        def totalCost(amount):
+            s = 0
+            for item in list2:
+                s += item.TotalMatPrice
+            s *= amount
+            return s    
+
+        # Multiply the material amount and total material amount 
+        # by the amount of artifacts
+        def calcMats(amount):
+            for i in range(len(mat_name)):
+                list2[i].MatAmount *= amount
+                list2[i].TotalMatPrice *= amount 
+
+        sum = totalCost(amt)
+        calcMats(amt)
+        capitalize = artifact.title()
+    
+    # Embed message to make results look pretty
+    embed = discord.Embed(title=capitalize,
+                          color=discord.Color.blue()) 
+    
+    for item in list2:
+        embed.add_field(name=item.MatName, 
+                        value='''Amount: {}\n
+                                Price: {} gp\n
+                                Total Price: {} gp'''.format(item.MatAmount,
+                                                            item.MatPrice, 
+                                                            item.TotalMatPrice))
+    
+    embed.add_field(name="Total cost of materials to restore {} {}(s)".format(amt, capitalize), 
+                    value='{} gp'.format(sum), 
+                    inline=False)
+    
+    # User name
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    
+    await ctx.send(embed=embed)
           
 client.run(code())
