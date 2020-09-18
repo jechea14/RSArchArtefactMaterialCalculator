@@ -61,6 +61,11 @@ for item in My_table.find_all('tbody'):
             temp = b.get_text()
             t.append(temp)
 
+experience = My_table.tbody.find_all('tr')[1]
+exp = experience.find('td').get_text()
+exp1 = exp.split()
+del(exp1[1])
+
 b = [x for x in t if x]
 
 # Split list into individual lists
@@ -79,9 +84,11 @@ while index < len(mat_price):
     index += 1
 
 index2 = 0
-while index2 < len(total_price):
-    total_price[index2] = total_price[index2].replace(',', '')
+while index2 < len(exp1):
+    exp1[index2] = exp1[index2].replace(',', '')
     index2 += 1
+
+e = float(exp1[0])
 
 # Create class to store material data
 class Materials:
@@ -115,6 +122,18 @@ class Materials:
     def TotalMatPrice(self, total_mat_price):
         self._total_mat_price = total_mat_price
 
+class ArtifactExp:
+    def __init__(self, experience):
+        self._experience = experience
+
+    @property
+    def Experience(self):
+        return self._experience
+
+    @Experience.setter
+    def Experience(self, experience):
+        self._experience = experience
+
 # Store each Material class object into a list
 list2 = []
 
@@ -139,15 +158,46 @@ def calcMats(amount):
         list2[i].MatAmount *= amount
         list2[i].TotalMatPrice *= amount 
 
+art = ArtifactExp(e)
 sum = totalCost(amt)
 calcMats(amt)
+capitalize = artifact.title()
 
-# Print summary
+# Total experience without full archaeology outfit
+def totalExperience(amount):
+    exp = art.Experience * amount
+    return exp
+
+# Total experience with full archaeology outfit
+def ExpWithOutfit(amount):
+    # Full archaeology outfit gives +6% bonus experience
+    outfit = 0.06
+    exp = amount * (art.Experience + (art.Experience * outfit))
+    return exp
+
+# Formatting for summary. Too many lists and for loops here
+from tabulate import tabulate
+headers = ['Material', 'Amount', 'Price (gp)', 'Total Price (gp)']
+name = []
+amount = []
+price = []
+total_price = []
+
 for item in list2:
-    print(f'''
-Material Name: {item.MatName}
-Amount: {item.MatAmount}
-Price: {item.MatPrice} gp
-Total Price: {item.TotalMatPrice} gp\n''')
+    name.append(item.MatName)
+
+for item in list2:
+    amount.append(item.MatAmount)
+
+for item in list2:
+    price.append(item.MatPrice)
+
+for item in list2:
+    total_price.append(item.TotalMatPrice)
     
-print(f"\nTotal cost of {amt} {artifact}(s) is: {sum} gp\n")
+table = zip(name, amount, price, total_price)
+print(f'\n{tabulate(table, headers=headers)}')
+
+xpheader = ['Total Cost (gp)', 'XP with outfit', 'XP without outfit', 'XP each']
+table1 = zip([sum], [ExpWithOutfit(amt)], [totalExperience(amt)], [e])
+print(f'\n{tabulate(table1, headers=xpheader)}')

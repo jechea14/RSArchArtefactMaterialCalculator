@@ -1,22 +1,13 @@
-Artifact: ancient timepiece
-Amount: 5
+Artifact: 'prima legio' painting
+Amount: 10
 
-Material Name: Goldrune
-Amount: 60
-Price: 1878 gp
-Total Price: 112680 gp
+Material             Amount    Price (gp)    Total Price (gp)
+-----------------  --------  ------------  ------------------
+White oak               200          1701              340200
+Samite silk             200          1793              358600
+Tyrian purple           740          4205             3111700
+Zarosian insignia       200          5041             1008200
 
-
-Material Name: Imperial steel
-Amount: 80
-Price: 1747 gp
-Total Price: 139760 gp
-
-
-Material Name: Ancient vis
-Amount: 90
-Price: 4179 gp
-Total Price: 376110 gp
-
-
-Total cost of 5 ancient timepiece(s) is: 628550 gp
+  Total Cost (gp)    XP with outfit    XP without outfit    XP each
+-----------------  ----------------  -------------------  ---------
+          4818700            459333               433333    43333.3
