@@ -69,6 +69,11 @@ async def calc(ctx):
                     temp = b.get_text()
                     t.append(temp)
 
+        experience = My_table.tbody.find_all('tr')[1]
+        exp = experience.find('td').get_text()
+        exp1 = exp.split()
+        del(exp1[1])
+
         b = [x for x in t if x]
 
         # Split list into individual lists
@@ -87,9 +92,11 @@ async def calc(ctx):
             index += 1
 
         index2 = 0
-        while index2 < len(total_price):
-            total_price[index2] = total_price[index2].replace(',', '')
+        while index2 < len(exp1):
+            exp1[index2] = exp1[index2].replace(',', '')
             index2 += 1
+
+        e = float(exp1[0])
 
         # Create class to store material data
         class Materials:
@@ -123,6 +130,18 @@ async def calc(ctx):
             def TotalMatPrice(self, total_mat_price):
                 self._total_mat_price = total_mat_price
 
+        class ArtifactExp:
+            def __init__(self, experience):
+                self._experience = experience
+
+            @property
+            def Experience(self):
+                return self._experience
+
+            @Experience.setter
+            def Experience(self, experience):
+                self._experience = experience
+
         # Store each Material class object into a list
         list2 = []
 
@@ -147,25 +166,51 @@ async def calc(ctx):
                 list2[i].MatAmount *= amount
                 list2[i].TotalMatPrice *= amount 
 
+        art = ArtifactExp(e)
+
+        # Total experience without full archaeology outfit
+        def totalExperience(amount):
+            exp = art.Experience * amount
+            return exp
+
+        # Total experience with full archaeology outfit
+        def ExpWithOutfit(amount):
+            # Full archaeology outfit gives +6% bonus experience
+            outfit = 0.06
+            exp = amount * (art.Experience + (art.Experience * outfit))
+            return exp
+
         sum = totalCost(amt)
         calcMats(amt)
         capitalize = artifact.title()
     
     # Embed message to make results look pretty
-    embed = discord.Embed(title=capitalize,
+    embed = discord.Embed(title='{} {}(s)'.format(amt, capitalize),
                           color=discord.Color.blue()) 
     
     for item in list2:
         embed.add_field(name=item.MatName, 
-                        value='''Amount: {}\n
-                                Price: {} gp\n
+                        value='''Amount: {}
+                                Price: {} gp
                                 Total Price: {} gp'''.format(item.MatAmount,
                                                             item.MatPrice, 
                                                             item.TotalMatPrice))
     
-    embed.add_field(name="Total cost of materials to restore {} {}(s)".format(amt, capitalize), 
+    embed.add_field(name="Total cost of materials:".format(amt, capitalize), 
                     value='{} gp'.format(sum), 
                     inline=False)
+    
+    embed.add_field(name="XP with outfit:", 
+                value='{} xp'.format(ExpWithOutfit(amt)), 
+                inline=True)
+    
+    embed.add_field(name="XP without outfit:", 
+                value='{} xp'.format(totalExperience(amt)), 
+                inline=True)
+    
+    embed.add_field(name="XP each:", 
+                value='{} xp'.format(e), 
+                inline=True)
     
     # User name
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
