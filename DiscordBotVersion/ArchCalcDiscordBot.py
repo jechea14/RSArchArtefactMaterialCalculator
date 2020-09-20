@@ -61,6 +61,9 @@ async def calc(ctx):
 
         My_table = soup.find_all('table', class_='wikitable')[1]
 
+        # Get artifact image
+        img = My_table.find('a').find('img').get('src')
+
         t = []
 
         for item in My_table.find_all('tbody'):
@@ -180,6 +183,8 @@ async def calc(ctx):
             exp = amount * (art.Experience + (art.Experience * outfit))
             return exp
 
+        start = 'https://runescape.wiki'
+        img_url = start + img
         sum = totalCost(amt)
         calcMats(amt)
         capitalize = artifact.title()
@@ -215,6 +220,7 @@ async def calc(ctx):
     # User name
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     
+    embed.set_thumbnail(url=img_url)
     await ctx.send(embed=embed)
           
 client.run(code())
