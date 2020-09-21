@@ -190,31 +190,31 @@ async def calc(ctx):
         capitalize = artifact.title()
     
     # Embed message to make results look pretty
-    embed = discord.Embed(title='{} {}(s)'.format(amt, capitalize),
+    embed = discord.Embed(title='{:,} {}(s)'.format(amt, capitalize),
                           color=discord.Color.blue()) 
     
     for item in list2:
         embed.add_field(name=item.MatName, 
-                        value='''Amount: {}
-                                Price: {} gp
-                                Total Price: {} gp'''.format(item.MatAmount,
+                        value='''Amount: {:,}
+                                Price: {:,} gp
+                                Total Price: {:,} gp'''.format(item.MatAmount,
                                                             item.MatPrice, 
                                                             item.TotalMatPrice))
     
     embed.add_field(name="Total cost of materials:".format(amt, capitalize), 
-                    value='{} gp'.format(sum), 
+                    value='{:,} gp'.format(sum), 
                     inline=False)
     
     embed.add_field(name="XP with outfit:", 
-                value='{} xp'.format(ExpWithOutfit(amt)), 
+                value='{:,} xp'.format(ExpWithOutfit(amt)), 
                 inline=True)
     
     embed.add_field(name="XP without outfit:", 
-                value='{} xp'.format(totalExperience(amt)), 
+                value='{:,} xp'.format(totalExperience(amt)), 
                 inline=True)
     
     embed.add_field(name="XP each:", 
-                value='{} xp'.format(e), 
+                value='{:,} xp'.format(e), 
                 inline=True)
     
     # User name

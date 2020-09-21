@@ -1,11 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+from tabulate import tabulate
 
 #Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36
 #Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36
 
 # Please provide a custom user agent to send information about yourself to be
-# considerate to the admins
+# considerate to the RS Wiki admins
 custom_agent = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36',
     'From': 'youremail@domain.com'
@@ -176,7 +177,6 @@ def ExpWithOutfit(amount):
     return exp
 
 # Formatting for summary. Too many lists and for loops here
-from tabulate import tabulate
 headers = ['Material', 'Amount', 'Price (gp)', 'Total Price (gp)']
 name = []
 amount = []
@@ -187,17 +187,19 @@ for item in list2:
     name.append(item.MatName)
 
 for item in list2:
-    amount.append(item.MatAmount)
+    amount.append("{:,}".format(item.MatAmount))
 
 for item in list2:
-    price.append(item.MatPrice)
+    price.append("{:,}".format(item.MatPrice))
 
 for item in list2:
-    total_price.append(item.TotalMatPrice)
+    total_price.append("{:,}".format(item.TotalMatPrice))
     
 table = zip(name, amount, price, total_price)
 print(f'\n{tabulate(table, headers=headers)}')
 
 xpheader = ['Total Cost (gp)', 'XP with outfit', 'XP without outfit', 'XP each']
-table1 = zip([sum], [ExpWithOutfit(amt)], [totalExperience(amt)], [e])
+table1 = zip(["{:,}".format(sum)], 
+             ["{:,}".format(ExpWithOutfit(amt))], 
+             ["{:,}".format(totalExperience(amt))])
 print(f'\n{tabulate(table1, headers=xpheader)}')
