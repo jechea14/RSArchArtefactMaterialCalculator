@@ -7,25 +7,25 @@ class Materials:
         self._total_mat_price = int(total_mat_price)
         
     @property
-    def MatName(self):
+    def mat_name(self):
         return self._mat_name
     
     @property
-    def MatAmount(self):
+    def mat_amount(self):
         return self._mat_amount
     
     @property
-    def MatPrice(self):
+    def mat_price(self):
         return self._mat_price
 
     @property
-    def TotalMatPrice(self):
+    def total_mat_price(self):
         return self._total_mat_price
     
-    @MatAmount.setter
-    def MatAmount(self, mat_amount):
+    @mat_amount.setter
+    def mat_amount(self, mat_amount):
         self._mat_amount = mat_amount
 
-    @TotalMatPrice.setter
-    def TotalMatPrice(self, total_mat_price):
+    @total_mat_price.setter
+    def total_mat_price(self, total_mat_price):
         self._total_mat_price = total_mat_price

@@ -3,9 +3,9 @@ class ArtifactExp:
         self._experience = experience
 
     @property
-    def Experience(self):
+    def experience(self):
         return self._experience
 
-    @Experience.setter
-    def Experience(self, experience):
+    @experience.setter
+    def experience(self, experience):
         self._experience = experience
