@@ -4,6 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 from secrets import code
 from discord.ext import commands
+from material import Materials
+from experience import ArtifactExp
 
 client = commands.Bot(command_prefix = '!')
 
@@ -101,50 +103,6 @@ async def calc(ctx):
 
         e = float(exp1[0])
 
-        # Create class to store material data
-        class Materials:
-            def __init__(self, mat_name, mat_amount, mat_price, total_mat_price):
-                self._mat_name = mat_name
-                self._mat_amount = int(mat_amount)
-                self._mat_price = int(mat_price)
-                self._total_mat_price = int(total_mat_price)
-                
-            @property
-            def MatName(self):
-                return self._mat_name
-            
-            @property
-            def MatAmount(self):
-                return self._mat_amount
-            
-            @property
-            def MatPrice(self):
-                return self._mat_price
-
-            @property
-            def TotalMatPrice(self):
-                return self._total_mat_price
-            
-            @MatAmount.setter
-            def MatAmount(self, mat_amount):
-                self._mat_amount = mat_amount
-
-            @TotalMatPrice.setter
-            def TotalMatPrice(self, total_mat_price):
-                self._total_mat_price = total_mat_price
-
-        class ArtifactExp:
-            def __init__(self, experience):
-                self._experience = experience
-
-            @property
-            def Experience(self):
-                return self._experience
-
-            @Experience.setter
-            def Experience(self, experience):
-                self._experience = experience
-
         # Store each Material class object into a list
         list2 = []
 
@@ -158,7 +116,7 @@ async def calc(ctx):
         def totalCost(amount):
             s = 0
             for item in list2:
-                s += item.TotalMatPrice
+                s += item.total_mat_price
             s *= amount
             return s    
 
@@ -166,21 +124,21 @@ async def calc(ctx):
         # by the amount of artifacts
         def calcMats(amount):
             for i in range(len(mat_name)):
-                list2[i].MatAmount *= amount
-                list2[i].TotalMatPrice *= amount 
+                list2[i].mat_amount *= amount
+                list2[i].total_mat_price *= amount 
 
         art = ArtifactExp(e)
 
         # Total experience without full archaeology outfit
         def totalExperience(amount):
-            exp = art.Experience * amount
+            exp = art.experience * amount
             return exp
 
         # Total experience with full archaeology outfit
         def ExpWithOutfit(amount):
             # Full archaeology outfit gives +6% bonus experience
             outfit = 0.06
-            exp = amount * (art.Experience + (art.Experience * outfit))
+            exp = amount * (art.experience + (art.experience * outfit))
             return exp
 
         start = 'https://runescape.wiki'
@@ -194,12 +152,12 @@ async def calc(ctx):
                           color=discord.Color.blue()) 
     
     for item in list2:
-        embed.add_field(name=item.MatName, 
+        embed.add_field(name=item.mat_name, 
                         value='''Amount: {:,}
                                 Price: {:,} gp
-                                Total Price: {:,} gp'''.format(item.MatAmount,
-                                                            item.MatPrice, 
-                                                            item.TotalMatPrice))
+                                Total Price: {:,} gp'''.format(item._mat_amount,
+                                                            item._mat_price, 
+                                                            item._total_mat_price))
     
     embed.add_field(name="Total cost of materials:".format(amt, capitalize), 
                     value='{:,} gp'.format(sum), 
