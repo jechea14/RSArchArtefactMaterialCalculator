@@ -11,7 +11,7 @@ This project is to help me learn Python and what a fun way to do so is to make t
 - Run the ArchCalcScript.py file by typing "python3 ArchCalcScript.py" without the quotations in the terminal. 
 
 ### Discord Bot Version:
-- Make sure to have Python 3 and the following python libraries installed: discord, requests, beautifulsoup4, and tabulate.
+- Make sure to have Python 3 and the following python libraries installed: discord, requests, and beautifulsoup4.
 - Must have created/own a discord bot in a discord server.
 - If already have a bot with other commands:
   1. Copy and paste the "rs_arch.py" file into your cogs folder then add 'cogs.rs_arch' into your extensions list in your main bot file.
