@@ -12,16 +12,16 @@ The U.S. spelling is "Artifact" while the U.K spelling is "Artefact". Jagex is b
 ### Script Version:
 - Make sure to have Python 3 and the following python libraries installed: requests, beautifulsoup4, and tabulate.
 - In the terminal, change directories to the "ScriptVersion" folder.
-- Run the ArchCalcScript.py file by typing "python3 ArchCalcScript.py" without the quotations in the terminal. 
+- Run the ArchCalcScript.py file by typing `python3 ArchCalcScript.py` in the terminal. 
 
 ### Discord Bot Version:
 - Make sure to have Python 3 and the following python libraries installed: discord, requests, and beautifulsoup4.
 - Must have created/own a discord bot in a discord server.
 - If already have a bot with other commands:
-  1. Copy and paste the "rs_arch.py" file into your cogs folder then add 'cogs.rs_arch' into your extensions list in your main bot file.
+  1. Copy and paste the `rs_arch.py` file into your cogs folder then add `cogs.rs_arch` into your extensions list in your main bot file.
   2. Run your bot and type the command !calc or whatever command the calculator is set to into your discord server chat.
 - If only have empty bot with no commands:
   1. In the terminal, change directories to the "DiscordBotVersion" folder.
-  2. Open the "ArchCalcDiscordBot.py" file without the quotations in a text editor and insert your bot login token into client.run('your token here').
-  3. Run the ArchCalcDiscordBot.py file by typing "python3 ArchCalcDiscordBot.py" without the quotations in the terminal to run the bot.
+  2. Open the `ArchCalcDiscordBot.py` file in a text editor and insert your bot login token into `client.run('your token here')`.
+  3. Run the ArchCalcDiscordBot.py file by typing `python3 ArchCalcDiscordBot.py` in the terminal to run the bot.
   4. Once the bot is online, type the command !calc or whatever command the calculator is set to into your discord server chat.
