@@ -25,3 +25,5 @@ The U.S. spelling is "Artifact" while the U.K spelling is "Artefact". Jagex is b
   2. Open the `ArchCalcDiscordBot.py` file in a text editor and insert your bot login token into `client.run('your token here')`.
   3. Run the ArchCalcDiscordBot.py file by typing `python3 ArchCalcDiscordBot.py` in the terminal to run the bot.
   4. Once the bot is online, type the command !calc or whatever command the calculator is set to into your discord server chat.
+  #### Demo 
+  ![demo](https://github.com/jechea14/AutomatedRSArchaeologyArtefactMaterialCalculator/blob/master/DiscordBotVersion/demo.png?raw=true)
