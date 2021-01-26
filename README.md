@@ -1,4 +1,4 @@
-# Automated RuneScape Archaeology Artefact Material Calculator
+# RuneScape Archaeology Artefact Material Calculator
 
 The calculator takes an input of an artefact name and how many of that artifact then it returns the amount of each material, total cost of each material, total cost of materials in gp, total experience with and without full archaeology outfit, and experience of each artefact. This calculator comes in two versions: script version and discord bot command version.
 
