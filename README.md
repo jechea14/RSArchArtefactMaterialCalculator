@@ -2,7 +2,7 @@
 
 The calculator takes an input of an artefact name and how many of that artifact then it returns the amount of each material, total cost of each material, total cost of materials in gp, total experience with and without full archaeology outfit, and experience of each artefact. This calculator comes in two versions: script version and discord bot command version.
 
-The data is collected by web scraping the RuneScape Wiki.
+The data is collected by web scraping the RuneScape Wiki for up-to-date material prices and information.
 
 This project is to help me learn Python and what a fun way to do so is to make this calculator.
 
