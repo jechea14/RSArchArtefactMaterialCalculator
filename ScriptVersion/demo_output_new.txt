@@ -1,0 +1,13 @@
+Artifact: 'prima legio' painting
+Amount: 3
+
+Material             Amount  Total Price
+-----------------  --------  -------------
+White oak                60  186,300 gp
+Samite silk              60  310,560 gp
+Tyrian purple           222  1,733,820 gp
+Zarosian insignia        60  248,040 gp
+
+Total Cost    XP with outfit    XP without outfit       XP each
+------------  ----------------  ----------------------  -----------
+2,478,720 gp  137,799.894 xp    129,999.90000000001 xp  43,333.3 xp
